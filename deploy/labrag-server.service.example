@@ -1,0 +1,16 @@
+[Unit]
+Description=LabRAG API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/LabRAG
+EnvironmentFile=-%h/LabRAG/.env
+Environment=PYTHONPATH=%h/LabRAG
+ExecStart=/usr/bin/env python -m uvicorn labrag.server:app --host 127.0.0.1 --port 8100
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

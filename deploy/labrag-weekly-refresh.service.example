@@ -1,0 +1,13 @@
+[Unit]
+Description=LabRAG weekly incremental index refresh
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/LabRAG
+EnvironmentFile=-%h/LabRAG/.env
+Environment=PYTHONPATH=%h/LabRAG
+RuntimeDirectory=labrag
+ExecStart=/usr/bin/flock -n %t/labrag/weekly-refresh.lock /usr/bin/env python scripts/weekly_refresh.py
+TimeoutStartSec=3h

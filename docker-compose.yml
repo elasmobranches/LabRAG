@@ -1,0 +1,25 @@
+services:
+  qdrant:
+    image: qdrant/qdrant:v1.18.3
+    restart: unless-stopped
+    ports:
+      - "${LABRAG_SERVICE_BIND_ADDRESS:-127.0.0.1}:6333:6333"
+    volumes:
+      - qdrant-data:/qdrant/storage
+
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      OPENAI_API_BASE_URL: http://host.docker.internal:8100/v1
+      OPENAI_API_KEY: local-labrag
+    ports:
+      - "${LABRAG_WEB_BIND_ADDRESS:-127.0.0.1}:3000:8080"
+    volumes:
+      - openwebui-data:/app/backend/data
+
+volumes:
+  qdrant-data:
+  openwebui-data:
