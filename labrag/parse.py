@@ -149,7 +149,7 @@ def pdf_text_ratio(path: Path, sample: int = 10) -> float:
 
 # 일부 오래된 도구가 만든 docx는 관계 타입·네임스페이스 URI로 OOXML 표준화(2006) 이전의
 # 초안 주소(purl.oclc.org/ooxml/...)를 그대로 쓴다 — 실측: 학회 제출용 논문 2건
-# (Accepted_paper.docx, conference-template-letter_ICRA작성본260403.docx) 모두
+# (legacy-draft.docx, conference-draft.docx) 모두
 # xmlns:w="http://purl.oclc.org/ooxml/wordprocessingml/main" 이었다. python-docx는
 # 표준 주소(schemas.openxmlformats.org, .../2006/...)만 인식해서 officeDocument
 # 관계를 못 찾고 KeyError 를 던진다 — 내용 자체는 정상 OOXML이라 주소만 바꾸면 읽힌다.

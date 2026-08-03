@@ -26,7 +26,7 @@
 않아도 되고 임의 가중치를 안 만든다.
 
 **위치는 manifest 의 실제 root/path 를 그대로 낸다.** 파일 요약은 AI 가 쓴 것이라
-틀릴 수 있으므로 찾는 데만 쓰고 위치의 근거로 쓰지 않는다(Codex 지적). 답변도
+틀릴 수 있으므로 찾는 데만 쓰고 위치의 근거로 쓰지 않는다. 답변도
 생성 모델을 거치지 않고 코드가 직접 만든다 — 경로를 옮겨 쓰다 틀릴 여지를 없앤다.
 """
 from __future__ import annotations
@@ -53,7 +53,7 @@ SYN_ONLY_RATIO = 0.88
 
 # ── 의도 감지 ──────────────────────────────────────────────────────────
 # 정규식으로 시작한다(생성 모델 분류는 지연이 늘고, 오분류 로그가 쌓인 뒤에
-# 비교하는 게 맞다 — Codex 권고). 대신 두 방향을 다 보고 3상태로 나눈다:
+# 비교하는 게 맞다). 대신 두 방향을 다 보고 3상태로 나눈다:
 # 위치 표현만 있으면 location, 내용 표현이 섞이면 ambiguous, 위치 표현이
 # 아예 없으면 content(= 기존 동작 그대로). 이렇게 하면 위치 표현이 없는
 # 질문은 지금과 100% 동일하게 처리된다.
@@ -160,7 +160,7 @@ class LocationResult:
 
 # ── "어디에 작성해야 해?" 는 위치가 아니라 작업 대상을 묻는다 ────────────
 # 가장 최근 수정 파일을 답으로 내면 위험하다 — 제출본·복사본·결과물이 최신
-# 수정일일 수 있다(Codex 지적). 그래서 역할을 나눠 보여주고 단정하지 않는다.
+# 수정일일 수 있다. 그래서 역할을 나눠 보여주고 단정하지 않는다.
 _TEMPLATE_HINT = re.compile(r"양식|서식|template|form|작성용|빈\s?파일|제출서류|샘플|예시", re.I)
 _ARCHIVE_HINT = re.compile(r"제출본|완료|최종|복사본|backup|백업|draft|초안|_구|이전|old", re.I)
 
@@ -215,7 +215,7 @@ def _trim(files: list[LocatedFile]) -> list[LocatedFile]:
     """상위 몇 개만 남기고, 근거가 약한 꼬리를 버린다.
 
     "두 신호가 다 걸려야 한다"는 규칙은 쓰면 안 된다 — 파일명을 모르고 묻는 질문에서는
-    요약만 맞는 것이 정상적인 정답이다(Codex 지적). 그래서 요약만 걸린 항목끼리
+    요약만 맞는 것이 정상적인 정답이다. 그래서 요약만 걸린 항목끼리
     비교해서 최고 유사도 대비 많이 떨어지는 것만 버린다.
     """
     best_syn = max((f.synopsis_score for f in files), default=0.0)
@@ -310,7 +310,7 @@ def render(result: LocationResult) -> str:
         if f.synopsis:
             bits.append(f"  {f.synopsis}")
         if f.doc.status != "indexed":
-            bits.append(f"  ⚠️ 본문은 검색 대상이 아니야 — {f.doc.error or '사유 미기록'}")
+            bits.append(f"  본문은 검색 대상이 아니야 — {f.doc.error or '사유 미기록'}")
         bits.append(f"  <sub>{f.doc.category} · 조각 {f.doc.n_chunks}개 · "
                     f"{', '.join(f.evidence[:2])}</sub>")
         lines.append("\n".join(bits))

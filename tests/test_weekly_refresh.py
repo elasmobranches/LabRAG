@@ -71,7 +71,7 @@ class WeeklyRefreshTests(unittest.TestCase):
             )
 
         report = run_refresh(
-            root=Path("/home/ubuntu/llm"),
+            root=Path("/workspace/labrag"),
             check_only=False,
             runner=runner,
         )
@@ -94,7 +94,7 @@ class WeeklyRefreshTests(unittest.TestCase):
         self.assertEqual(len(calls), 7)
 
     def test_weekly_commands_are_incremental_and_nondestructive(self):
-        commands = [step.command for step in build_steps(Path("/home/ubuntu/llm"))]
+        commands = [step.command for step in build_steps(Path("/workspace/labrag"))]
         flat = "\n".join(" ".join(command) for command in commands)
         self.assertIn("scripts/index.py", flat)
         self.assertIn("scripts/index_slack.py --incremental", flat)
@@ -114,7 +114,7 @@ class WeeklyRefreshTests(unittest.TestCase):
             return subprocess.CompletedProcess(command, 0, "ok", "")
 
         report = run_refresh(
-            root=Path("/home/ubuntu/llm"),
+            root=Path("/workspace/labrag"),
             check_only=True,
             runner=runner,
         )
@@ -144,7 +144,7 @@ class WeeklyRefreshTests(unittest.TestCase):
             return subprocess.CompletedProcess(command, 0, long_text, "")
 
         report = run_refresh(
-            root=Path("/home/ubuntu/llm"),
+            root=Path("/workspace/labrag"),
             check_only=True,
             runner=runner,
         )

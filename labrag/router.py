@@ -157,9 +157,8 @@ def _is_openwebui_task_prompt(query: str) -> bool:
     (Open WebUI `config.py` 의 `DEFAULT_*_GENERATION_PROMPT_TEMPLATE`).
 
     Open WebUI 는 원래 `metadata: {"task": "title_generation"}` 를 붙이지만 외부 API
-    로 보내기 직전에 `payload.pop("metadata")` 로 떼어낸다. 그래서 우리 서버에는
-    표시 없는 긴 글만 오고, 그 안에 대화 전체가 들어 있어 진짜 질문으로 오인됐다 —
-    제목 하나 지으려고 드라이브 24만 건을 검색하고 웹 검색까지 불렀다.
+    로 보내기 직전에 `payload.pop("metadata")` 로 떼어낸다. 따라서 서버에는 표시
+    없는 긴 글만 도착하고, 그 안의 대화 내용 때문에 실제 질문으로 오인될 수 있다.
 
     사용자 질문이 이 머리말로 시작할 일은 없으므로 이것으로 구분한다. 관리자가
     Open WebUI 에서 프롬프트 템플릿을 바꾸면 이 단서가 사라지니, 그때는 연결 설정에

@@ -115,7 +115,7 @@ class ServerRoutingTests(unittest.TestCase):
     def test_mode_defaults_to_auto(self):
         self.assertEqual(self.request().mode, "auto")
 
-    def test_public_model_id_is_agtech_v1(self):
+    def test_public_model_id_is_labrag(self):
         self.assertEqual(MODEL_ID, "LabRAG")
 
     def test_invalid_mode_is_rejected(self):
@@ -619,10 +619,10 @@ class WebChatRoutingTests(unittest.IsolatedAsyncioTestCase):
         """내부 근거를 못 찾아 일반 지식으로 답했으면 밝혀야 한다.
 
         말없이 일반 답변을 하면 사용자는 연구실에 자료가 없다고 오해한다 — 실측에서
-        "트라이포트 물류체계"가 인덱스의 정의 대신 틀린 일반 지식으로 답해졌다.
+        "오로라 배치체계"가 인덱스의 정의 대신 틀린 일반 지식으로 답해졌다.
         """
         req = ChatRequest(messages=[{
-            "role": "user", "content": "트라이포트 물류체계가 뭐야?",
+            "role": "user", "content": "오로라 배치체계가 뭐야?",
         }])
         with patch.object(
             server, "_ensure_slack_stores", return_value=True

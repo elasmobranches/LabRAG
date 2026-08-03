@@ -87,7 +87,7 @@ CASES: list[tuple[str, str, str, str | None]] = [
 
     # ── 키워드가 없는 업무 질문: 문턱 0.65 시절 전부 general 로 샜다 ────────
     # 인덱스에 답이 있는데도 그럴듯하게 틀린 일반 지식으로 답하던 것들이다.
-    ("probe", "트라이포트 물류체계가 뭐야?", "rag", None),
+    ("probe", "오로라 배치체계가 뭐야?", "rag", None),
     ("probe", "공기 흐름이 증산에 어떤 영향을 준대?", "rag", None),
     ("probe", "예시 식당 예약 몇 시야?", "rag", None),
     ("probe", "오이 어노테이션 작업은 어떻게 진행됐어?", "rag", None),

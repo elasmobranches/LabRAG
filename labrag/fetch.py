@@ -78,7 +78,7 @@ def candidate_ids(file_id: str) -> list[str]:
     """드라이브 바로가기(shortcut)는 ID 가 두 개 붙어서 온다.
 
     rclone lsjson 이 바로가기 항목의 ID 를 탭으로 이어붙여 준다:
-        '15zYlnW8yN6E1RvIBf7ceeSjeV5oCIGbJNJB2VqkOjvU\\t1fkrF37chrvVaLRsCE28DagPtY190a_OG'
+        'source-file-id\\ttarget-file-id'
     이걸 그대로 copyid 에 넘기면 실패한다. 실측에서는 앞쪽이 실제 대상이었지만,
     순서를 가정하지 않고 차례로 시도한다 (바로가기에서만 최대 2회).
     """

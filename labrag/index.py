@@ -64,7 +64,7 @@ class Result:
         ]
         if self.still_failed:
             lines.append(
-                f"⚠️ 이전 실패 상태로 남아있음: {self.still_failed}개 "
+                f"이전 실패 상태로 남아있음: {self.still_failed}개 "
                 f"(재시도하려면 retry_failed=True)"
             )
         if self.deleted_files:
@@ -217,7 +217,7 @@ def prune_deleted(files: list[DriveFile], store: Store,
                   conn: sqlite3.Connection, res: Result | None = None) -> int:
     """드라이브에서 사라진 파일의 청크를 인덱스에서 제거한다.
 
-    ⚠️ files 는 '현재 범위 전체'여야 한다. 일부 폴더만 스캔한 목록을 넘기면
+    files 는 '현재 범위 전체'여야 한다. 일부 폴더만 스캔한 목록을 넘기면
     나머지 폴더의 인덱스를 전부 지워버린다. 그래서 기본 동작이 아니라 별도 함수다.
     """
     live = {f.id for f in files}

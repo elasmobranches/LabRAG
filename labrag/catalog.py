@@ -47,7 +47,7 @@ def _root_segments(root: str) -> tuple[str, ...]:
 
     ``normalize()``는 "/"를 공백으로 뭉개버려서 "lab 연구실"처럼 계층 정보를 잃는다.
     그 문자열로 부분일치를 하면 "lab"이라는 prefix 하나가 다른 폴더까지 다 잡아먹는
-    문제가 생긴다(Codex 리뷰 지적). 경로 비교는 구간(segment) 단위로 해야 한다.
+    문제가 생긴다. 경로 비교는 구간(segment) 단위로 해야 한다.
     """
     return tuple(normalize(p) for p in root.split("/") if p.strip())
 
@@ -131,7 +131,7 @@ class ManifestCatalog:
         try:
             # 'indexed'뿐 아니라 'skipped'도 로딩한다 — 스캔본 PDF처럼 내용은
             # 못 뽑았어도 파일명·위치는 manifest 에 있다. 실측: "예시 서비스 서비스"를
-            # 물으면 (연예시 서비스트)예시 서비스_서비스소개서.pdf(스캔본, OCR 필요, n_chunks=0)
+            # 물으면 scanned-product-overview.pdf(스캔본, OCR 필요, n_chunks=0)
             # 가 'indexed'만 보던 기존 쿼리에서는 아예 존재하지 않는 파일처럼
             # 취급돼, 완전히 무관한 파일로 답이 나갔다. 검색 후보로 쓰지는
             # 않되(청크가 없으니 본문을 못 준다) "위치 안내"용으로는 쓴다
@@ -167,7 +167,7 @@ class ManifestCatalog:
 
         ``allowed_roots``는 preferred_roots와 다르다 — 점수 가산이 아니라 하드
         필터다. 요청이 특정 폴더로 범위를 좁혔는데(roots=[...]) canonical/lexical이
-        그 밖의 폴더 파일을 돌려주면 안 된다(Codex 리뷰에서 지적된 scope 위반).
+        그 밖의 폴더 파일을 돌려주면 안 된다(검토에서 확인된 scope 위반).
 
         ``statuses``는 기본 ("indexed",)만 본다 — 기존 하이브리드/canonical 호출은
         내용이 있는 파일만 대상으로 해야 하므로 그대로 둔다. "skipped"도 보고
@@ -256,8 +256,8 @@ def detect_canonical_intent(query: str, config: dict[str, CanonicalRecord]) -> C
     """질문이 어떤 canonical intent에 해당하는지 규칙 기반으로 판단한다.
 
     "구성원"이라는 단어 하나만 보고 바로 매칭하면 안 된다 — "구성원들이 쓴 논문",
-    "구성원별 회의록"처럼 명부 조회가 아닌 질문까지 오분류할 위험이 있다(Codex
-    자문에서 지적된 우려사례). `intent_terms` 중 하나 **+ `context_terms` 중
+    "구성원별 회의록"처럼 명부 조회가 아닌 질문까지 오분류할 위험이 있다.
+    `intent_terms` 중 하나 **+ `context_terms` 중
     하나**가 같이 있어야 하고, `exclude_if_present`(논문/회의록/학회 등, 이 intent가
     아니라는 강한 신호)에 걸리면 후보에서 뺀다.
     """

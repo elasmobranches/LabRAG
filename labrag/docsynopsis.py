@@ -32,7 +32,7 @@ DOC_COLLECTION = f"{settings.collection}_docsyn"
 
 # synopsis 프롬프트나 생성 모델을 바꾸면 이 값을 올린다. mod_time 만 보고 증분
 # 스킵하면, 프롬프트를 고쳐도 파일이 안 바뀐 이상 옛 synopsis가 그대로 남아
-# 새/구 버전이 조용히 섞인다(Codex 리뷰 지적).
+# 새/구 버전이 조용히 섞인다.
 PIPELINE_VERSION = "v1"
 
 # chunk.py 와 다른 네임스페이스를 써서 포인트 ID가 절대 겹치지 않게 한다

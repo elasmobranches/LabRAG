@@ -17,7 +17,7 @@ _SLACK_CUE = re.compile(r"#|채널|슬랙|slack", re.IGNORECASE)
 
 
 def _normalize(value: str) -> str:
-    """구분자와 대소문자 차이를 지운다 — `연구실 운영`·`프로젝트운영`은 같은 이름이다."""
+    """구분자와 대소문자 차이를 지운다 — `프로젝트 운영`과 `프로젝트운영`은 같다."""
     return _SEPARATORS.sub("", value or "").casefold()
 
 
@@ -43,8 +43,8 @@ _GENERIC_FRAGMENTS = {
 def _fragments(query: str) -> list[str]:
     """질문의 연속된 어절 묶음을 긴 것부터 만든다.
 
-    긴 것부터 보는 이유는 `참독 개발` 이 `참독` 보다 채널을 더 좁게 지목하기
-    때문이다 — `참독` 만으로는 두 채널에 걸려 판단을 포기하게 된다.
+    긴 표현일수록 채널을 더 구체적으로 지목한다. 짧은 조각이 여러 채널에 걸리면
+    판단하지 않고 전체 Slack 검색으로 남겨 둔다.
     """
     words = [word for word in _WORD_BOUNDARY.split(query) if word]
     fragments: list[str] = []
@@ -95,8 +95,7 @@ def _explicit_channel_reference(query: str, name: str) -> bool:
 def _mentions(name: str, fragment: str) -> bool:
     """조각이 채널 이름의 경계에 맞는가.
 
-    이름 한가운데에 우연히 들어맞는 것은 근거로 치지 않는다 — `내용` 이
-    `학위논문내용공유` 에 걸려 엉뚱한 채널로 좁히는 일이 실제로 있었다.
+    이름 한가운데에 우연히 들어맞는 것은 근거로 치지 않는다.
     사람이 이름을 줄여 부를 때는 앞이나 뒤를 잘라 부르지, 가운데만 떼어 부르지
     않는다(`프로젝트운영`→`운영`, `work-log`→`근무일지`).
     """
