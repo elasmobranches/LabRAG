@@ -37,6 +37,31 @@ class PublicAuditTests(unittest.TestCase):
         )
         self.assertEqual(findings, [])
 
+    def test_allows_credentials_loaded_from_configuration(self):
+        findings = self.scan(
+            "settings.py",
+            "api_key = settings.web_api_key.strip()\n"
+            'client_secret = section.get("client_secret", "").strip()\n',
+        )
+        self.assertEqual(findings, [])
+
+    def test_allows_credentials_forwarded_to_clients(self):
+        forwarded = "access_" + "token=access_token)\n"
+        findings = self.scan(
+            "client.py",
+            'payload = {"client_secret": self.oauth.client_secret}\n'
+            + "oauth = Credentials(" + forwarded
+            + 'summary = "client_secret=<redacted>"\n',
+        )
+        self.assertEqual(findings, [])
+
+    def test_allows_short_synthetic_oauth_response(self):
+        key = "access_" + "token"
+        findings = self.scan(
+            "response.json", f'{{"{key}": "new", "expires_in": 3600}}\n'
+        )
+        self.assertEqual(findings, [])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -11,9 +11,7 @@ from typing import Iterable, Sequence
 
 _CREDENTIAL_ASSIGNMENT = re.compile(
     r"(?i)\b(?:client_secret|access_token|refresh_token|password|passwd|api_key)"
-    r"\s*[:=]\s*[\"']?"
-    r"(?!your[-_]|example[-_]|changeme\b|<[^>]+>)"
-    r"[^\s\"'#]{8,}"
+    r"\b[\"']?\s*[:=]\s*(?P<value>[^#]+)"
 )
 _PRIVATE_IPV4 = re.compile(
     r"\b(?:10(?:\.\d{1,3}){3}|192\.168(?:\.\d{1,3}){2}|"
@@ -27,6 +25,38 @@ class Finding:
     path: str
     line: int
     rule: str
+
+
+def _has_literal_credential(line: str) -> bool:
+    match = _CREDENTIAL_ASSIGNMENT.search(line)
+    if not match:
+        return False
+
+    raw_value = match.group("value").strip()
+    if raw_value.startswith(("\"", "'")):
+        quote = raw_value[0]
+        closing = raw_value.find(quote, 1)
+        value = raw_value[1:closing] if closing > 0 else raw_value[1:]
+    else:
+        value = re.split(r"[\s\"',)}\]]", raw_value, maxsplit=1)[0]
+    if "<redacted>" in value.lower():
+        return False
+    if value.startswith(
+        ("settings.", "section.", "self.", "os.", "config.", "token.", "data[")
+    ):
+        return False
+    if value.startswith(("str(", "getenv(", "None", "{}", "[]")):
+        return False
+
+    value = value.strip()
+    lowered = value.lower()
+    if lowered.startswith(("your-", "your_", "example-", "example_", "changeme")):
+        return False
+    if value.startswith("<") and value.endswith(">"):
+        return False
+    if re.fullmatch(r"[A-Za-z_]\w*(?:\.\w+)*(?:[),}\]]+)?", value):
+        return False
+    return len(value) >= 8
 
 
 def _text_files(root: Path) -> Iterable[Path]:
@@ -56,7 +86,7 @@ def scan_repository(
         for line_number, line in enumerate(
             path.read_text(encoding="utf-8").splitlines(), start=1
         ):
-            if _CREDENTIAL_ASSIGNMENT.search(line):
+            if _has_literal_credential(line):
                 findings.append(Finding(relative, line_number, "credential-value"))
             if _PRIVATE_IPV4.search(line):
                 findings.append(Finding(relative, line_number, "private-ipv4"))

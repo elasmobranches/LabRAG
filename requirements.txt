@@ -1,0 +1,17 @@
+beautifulsoup4
+fastapi
+httpx
+langchain-text-splitters
+lxml
+numpy
+openpyxl
+pydantic
+pydantic-settings
+PyMuPDF
+pyhwp
+pypdf
+python-docx
+python-pptx
+qdrant-client
+six
+uvicorn[standard]
