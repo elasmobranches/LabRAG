@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.env
+.env.*
+!.env.example
+data/
+logs/
+secrets/
+models/
+hf_cache/
+qdrant_storage/
+openwebui/
+*.sqlite
+*.log
+client_secret_*.json
