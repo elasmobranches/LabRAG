@@ -13,14 +13,14 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="LABRAG_", extra="ignore")
 
     # --- 경로 ---
-    root: Path = Path("/home/ubuntu/llm")
-    data_dir: Path = Path("/home/ubuntu/llm/data")
-    rclone: Path = Path("/home/ubuntu/.local/bin/rclone")
+    root: Path = Path(".")
+    data_dir: Path = Path("data")
+    rclone: Path = Path("rclone")
 
     # --- 드라이브 ---
     # rclone 리모트 이름. 공유 드라이브는 "gdrive,team_drive=<id>:" 형태로 확장.
     remote: str = "gdrive"
-    rclone_config: Path = Path("/home/ubuntu/.config/rclone/rclone.conf")
+    rclone_config: Path = Path(".config/rclone/rclone.conf")
 
     # --- 실시간 Drive 위치 검색 ---
     live_drive_enabled: bool = True
@@ -62,6 +62,7 @@ class Settings(BaseSettings):
     rerank_url: str = "http://localhost:8081"
     vllm_url: str = "http://localhost:8000/v1"
     vllm_model: str = "qwen"
+    model_id: str = "LabRAG"
 
     collection: str = "lab_docs"
 

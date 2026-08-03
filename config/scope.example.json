@@ -1,0 +1,15 @@
+{
+  "include": [
+    {
+      "id": "your-drive-folder-id",
+      "name": "ResearchWorkspace",
+      "mode": "content",
+      "split": true
+    }
+  ],
+  "exclude": [],
+  "my_drive": {
+    "mode": "off",
+    "folders": []
+  }
+}

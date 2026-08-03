@@ -59,7 +59,7 @@ from .web_search import (
     web_search_metrics,
 )
 
-MODEL_ID = "LabRAG"
+MODEL_ID = settings.model_id
 SLACK_COLLECTION = "lab_slack"
 SLACK_PARENT_COLLECTION = "lab_slack_parent"
 SLACK_UNAVAILABLE_MESSAGE = (
@@ -206,7 +206,7 @@ async def lifespan(app: FastAPI):
         await _state["http"].aclose()
 
 
-app = FastAPI(title="연구실 RAG", lifespan=lifespan)
+app = FastAPI(title="LabRAG", lifespan=lifespan)
 
 
 class ChatMessage(BaseModel):

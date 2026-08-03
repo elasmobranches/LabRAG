@@ -1,0 +1,11 @@
+{
+  "records": [
+    {
+      "key": "lab_overview",
+      "intent_terms": ["연구실 소개", "랩 소개"],
+      "exclude_if_present": ["다른 연구실"],
+      "filename_hints": ["lab-overview"],
+      "preferred_roots": ["[Workspace]/operations"]
+    }
+  ]
+}
